@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import {
@@ -13,6 +13,7 @@ import {
 import api, { Paginated } from '../api/api';
 import { BooksServerData } from '../api/services/books';
 import SearchInput from '../components/Inputs/SearchInput';
+import NoResults from '../components/NoResults/NoResults';
 
 const BookList = () => {
   /** CONSTANTS */
@@ -21,13 +22,15 @@ const BookList = () => {
   const history = useHistory();
   const path = window.location.pathname;
   const initialQueryString = queryString.parse(location.search);
-  const initialPageNumber = Number(initialQueryString.page);
+  const initialPageNumber = Number(initialQueryString.page) || 1;
 
   /** STATE */
 
   const [data, setData] = useState<null | Paginated<BooksServerData>>(null);
-  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [currentPage, setCurrentPage] = useState(initialPageNumber);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searched, setSearched] = useState(false);
 
   /** EFFECTS */
 
@@ -36,18 +39,20 @@ const BookList = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(false);
+    setLoaded(false);
 
     api.books
       .postBooks({
         page: currentPage,
-        itemsPerPage: 20
+        itemsPerPage: 20,
+        filters: [{ type: 'all', values: [searchTerm] }]
       })
       .then(res => {
-        setLoading(true);
+        setLoaded(true);
+        setSearched(false);
         return setData(res);
       });
-  }, [currentPage]);
+  }, [currentPage, searched]);
 
   useEffect(() => {
     if (currentPage > 0) {
@@ -55,16 +60,38 @@ const BookList = () => {
     }
   }, [currentPage]);
 
+  /** CALLBACKS */
+
+  const handleSearchInputChange = useCallback(
+    searchTermValue => {
+      setSearchTerm(searchTermValue);
+    },
+    [searchTerm]
+  );
+
+  const handleSearchSubmit = useCallback(
+    event => {
+      event.preventDefault();
+      setCurrentPage(1);
+      setSearched(true);
+    },
+    [searchTerm]
+  );
+
   /** UI */
 
   return (
     <Container>
-      <Jumbotron>
+      <Jumbotron className="text-white text-center py-5 px-4 my-5 bg-primary">
         <h1 className="h1 text-center">Paginated Books</h1>
       </Jumbotron>
       <Row>
         <Col xs="12" sm="6">
-          <SearchInput />
+          <SearchInput
+            buttonDisabled={!searchTerm}
+            handleSubmit={e => handleSearchSubmit(e)}
+            onInputChange={(value: string) => handleSearchInputChange(value)}
+          />
         </Col>
         <Col xs="12" sm="6" className="d-flex justify-content-end">
           <Button
@@ -84,17 +111,15 @@ const BookList = () => {
         </Col>
       </Row>
       <Row className="mt-4">
-        {data && loading ? (
+        {data && loaded ? (
           data.items.books.map(book => (
             <Col xs="12" lg="6" className="mb-4">
               <Card border="primary" className="w-100 h-100">
                 <Card.Body>
                   <Card.Title>{book.book_title}</Card.Title>
                   <Card.Text>
-                    Book author:
-                    {book.book_author.map((bookAuthor, index) => (
-                      <span> {bookAuthor}</span>
-                    ))}
+                    Book author:{' '}
+                    {book.book_author.map((bookAuthor, index) => bookAuthor)}
                   </Card.Text>
                   <Card.Text>Book pages: {book.book_pages}</Card.Text>
                   <Card.Text>
@@ -118,6 +143,7 @@ const BookList = () => {
             <Spinner animation="border" variant="primary" />
           </Col>
         )}
+        {data && data.items.books.length <= 0 && <NoResults />}
       </Row>
     </Container>
   );

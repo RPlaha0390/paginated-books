@@ -1,8 +1,14 @@
 import { Paginated, client } from '../api';
 
+interface Filter {
+  type: string;
+  values: string[];
+}
+
 interface BooksParams {
   page: number;
   itemsPerPage: number;
+  filters: Filter[];
 }
 
 interface Books {
@@ -22,11 +28,13 @@ export interface BooksServerData {
 
 const postBooks = async ({
   page = 1,
-  itemsPerPage = 20
+  itemsPerPage = 20,
+  filters
 }: BooksParams): Promise<Paginated<BooksServerData>> => {
   const response = await client.post('/books', {
     page,
-    itemsPerPage
+    itemsPerPage,
+    filters
   });
 
   const offset = itemsPerPage * page;
