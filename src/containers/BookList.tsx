@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import api, { Paginated } from '../api/api';
-import Container from 'react-bootstrap/Container';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Accordion from 'react-bootstrap/Accordion';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import { BooksServerData } from '../api/services/books';
 import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import {
+  Row,
+  Col,
+  Jumbotron,
+  Card,
+  Button,
+  Accordion,
+  Container
+} from 'react-bootstrap';
+import api, { Paginated } from '../api/api';
+import { BooksServerData } from '../api/services/books';
 
 const BookList = () => {
   /** CONSTANTS */
 
   const location = useLocation();
   const history = useHistory();
+  const path = window.location.pathname;
 
   /** STATE */
 
@@ -29,12 +33,8 @@ const BookList = () => {
     const isValidPageNumber = Boolean(initialPageNumber);
 
     history.push(
-      `${window.location.pathname}?page=${
-        isValidPageNumber ? initialPageNumber : currentPage
-      }`
+      `${path}?page=${isValidPageNumber ? initialPageNumber : currentPage}`
     );
-
-    setCurrentPage(initialPageNumber);
   }, []);
 
   useEffect(() => {
@@ -46,6 +46,12 @@ const BookList = () => {
       .then(res => setData(res));
   }, [currentPage]);
 
+  useEffect(() => {
+    if (currentPage > 0) {
+      history.push(`${path}?page=${currentPage}`);
+    }
+  }, [currentPage]);
+
   /** UI */
 
   return (
@@ -53,7 +59,29 @@ const BookList = () => {
       <Jumbotron>
         <h1 className="h1 text-center">Paginated Books</h1>
       </Jumbotron>
-      <Accordion defaultActiveKey="0">
+      <Row>
+        <Col></Col>
+        <Col></Col>
+        <Col>
+          <div className="d-flex justify-content-end">
+            <Button
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="mr-3 flex-fill"
+            >
+              Back
+            </Button>
+            <Button
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={data ? data.moreItems : false}
+              className="flex-fill"
+            >
+              Forward
+            </Button>
+          </div>
+        </Col>
+      </Row>
+      <Accordion>
         {data
           ? data.items.books.map(book => (
               <Card>

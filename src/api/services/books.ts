@@ -28,7 +28,10 @@ const postBooks = async ({
     page,
     itemsPerPage
   });
-  return { items: response.data, moreItems: true };
+
+  const offset = itemsPerPage * page;
+
+  return { items: response.data, moreItems: offset >= response.data.count };
 };
 
 export default {
