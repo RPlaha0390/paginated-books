@@ -10,7 +10,6 @@ const SearchInput = ({
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   buttonDisabled: boolean;
 }) => {
-  console.log(buttonDisabled);
   return (
     <Form
       inline

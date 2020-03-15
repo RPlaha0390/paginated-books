@@ -75,7 +75,7 @@ const BookList = () => {
       setCurrentPage(1);
       setSearched(true);
     },
-    [searchTerm]
+    [searchTerm, currentPage]
   );
 
   /** UI */
@@ -143,7 +143,7 @@ const BookList = () => {
             <Spinner animation="border" variant="primary" />
           </Col>
         )}
-        {data && data.items.books.length <= 0 && <NoResults />}
+        {data && loaded && data.items.books.length <= 0 && <NoResults />}
       </Row>
     </Container>
   );
