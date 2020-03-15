@@ -1,9 +1,5 @@
-import api, {Paginated} from '../api/api';
-import {BooksServerData} from '../api/services/books';
-import SearchInput from '../components/Inputs/SearchInput';
-import NoResults from '../components/NoResults/NoResults';
-import React, {useCallback, useEffect, useState} from 'react';
 import queryString from 'query-string';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Button,
   Card,
@@ -14,6 +10,10 @@ import {
   Spinner,
 } from 'react-bootstrap';
 import {useHistory, useLocation} from 'react-router-dom';
+import api, {Paginated} from '../api/api';
+import {BooksServerData} from '../api/services/books';
+import SearchInput from '../components/Inputs/SearchInput';
+import NoResults from '../components/NoResults/NoResults';
 
 const BookList = () => {
   /** CONSTANTS */
