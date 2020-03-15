@@ -1,10 +1,10 @@
 import React from 'react';
-import {Button, Form, FormControl, InputGroup} from 'react-bootstrap';
+import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 
 const SearchInput = ({
   onInputChange,
   handleSubmit,
-  buttonDisabled,
+  buttonDisabled
 }: {
   onInputChange: (value: string) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -14,7 +14,8 @@ const SearchInput = ({
     <Form
       inline
       className="mb-4 mb-sm-1"
-      onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+      onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
+    >
       <InputGroup>
         <FormControl
           type="text"
