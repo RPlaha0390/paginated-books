@@ -35,9 +35,8 @@
     }
   },
   "lint-staged": {
-    "*.ts": [
-      "yarn lint",
-      "git add"
+    "*.ts, *.tsx": [
+      "yarn lint"
     ]
   },
   "eslintConfig": {
