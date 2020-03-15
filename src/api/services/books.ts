@@ -1,4 +1,4 @@
-import { Paginated, client } from '../api';
+import { client, Paginated } from '../api';
 
 interface Filter {
   type: string;

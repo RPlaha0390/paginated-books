@@ -1,0 +1,33 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier",
+    "tslint-react-hooks"
+  ],
+  "rules": {
+    "object-literal-sort-keys": false,
+    "interface-name": false,
+    "no-empty-interface": false,
+    "member-access": false,
+    "no-var-requires": false,
+    "array-type": false,
+    "jsx-boolean-value": ["never"],
+    "jsx-no-lambda": false,
+    "no-console": false,
+    "max-classes-per-file": false,
+    "react-hooks-nesting": {
+      "severity": "warning"
+    },
+    "no-duplicate-imports": true,
+    "ordered-imports": [
+      true,
+      {
+        "grouped-imports": true,
+        "groups": ["^@pkga", "^.."]
+      }
+    ]
+  },
+  "rulesDirectory": []
+}

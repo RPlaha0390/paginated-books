@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Button } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 
 const NoResults = () => (
   <Col

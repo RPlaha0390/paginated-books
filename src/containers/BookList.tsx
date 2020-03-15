@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Row,
-  Col,
-  Jumbotron,
-  Card,
   Button,
+  Card,
+  Col,
   Container,
+  Jumbotron,
+  Row,
   Spinner
 } from 'react-bootstrap';
+import { useHistory, useLocation } from 'react-router-dom';
 import api, { Paginated } from '../api/api';
 import { BooksServerData } from '../api/services/books';
 import SearchInput from '../components/Inputs/SearchInput';
@@ -36,6 +36,7 @@ const BookList = () => {
 
   useEffect(() => {
     history.push(`${path}?page=${currentPage}`);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -52,31 +53,26 @@ const BookList = () => {
         setSearched(false);
         return setData(res);
       });
+    // eslint-disable-next-line
   }, [currentPage, searched]);
 
   useEffect(() => {
     if (currentPage > 0) {
       history.push(`${path}?page=${currentPage}`);
     }
-  }, [currentPage]);
+  }, [currentPage, history, path]);
 
   /** CALLBACKS */
 
-  const handleSearchInputChange = useCallback(
-    searchTermValue => {
-      setSearchTerm(searchTermValue);
-    },
-    [searchTerm]
-  );
+  const handleSearchInputChange = useCallback(searchTermValue => {
+    setSearchTerm(searchTermValue);
+  }, []);
 
-  const handleSearchSubmit = useCallback(
-    event => {
-      event.preventDefault();
-      setCurrentPage(1);
-      setSearched(true);
-    },
-    [searchTerm, currentPage]
-  );
+  const handleSearchSubmit = useCallback(event => {
+    event.preventDefault();
+    setCurrentPage(1);
+    setSearched(true);
+  }, []);
 
   /** UI */
 
@@ -113,7 +109,7 @@ const BookList = () => {
       <Row className="mt-4">
         {data && loaded ? (
           data.items.books.map(book => (
-            <Col xs="12" lg="6" className="mb-4">
+            <Col xs="12" lg="6" className="mb-4" key={book.id}>
               <Card border="primary" className="w-100 h-100">
                 <Card.Body>
                   <Card.Title>{book.book_title}</Card.Title>
