@@ -1,5 +1,5 @@
-import {Button, Form, FormControl, InputGroup} from 'react-bootstrap';
 import React from 'react';
+import {Button, Form, FormControl, InputGroup} from 'react-bootstrap';
 
 const SearchInput = ({
   onInputChange,

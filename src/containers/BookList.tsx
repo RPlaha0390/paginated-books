@@ -1,5 +1,9 @@
 import queryString from 'query-string';
-import React, { useCallback, useEffect, useState } from 'react';
+import api, {Paginated} from '../api/api';
+import {BooksServerData} from '../api/services/books';
+import SearchInput from '../components/Inputs/SearchInput';
+import NoResults from '../components/NoResults/NoResults';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Button,
   Card,
@@ -7,13 +11,9 @@ import {
   Container,
   Jumbotron,
   Row,
-  Spinner
+  Spinner,
 } from 'react-bootstrap';
-import { useHistory, useLocation } from 'react-router-dom';
-import api, { Paginated } from '../api/api';
-import { BooksServerData } from '../api/services/books';
-import SearchInput from '../components/Inputs/SearchInput';
-import NoResults from '../components/NoResults/NoResults';
+import {useHistory, useLocation} from 'react-router-dom';
 
 const BookList = () => {
   /** CONSTANTS */
@@ -46,7 +46,7 @@ const BookList = () => {
       .postBooks({
         page: currentPage,
         itemsPerPage: 20,
-        filters: [{ type: 'all', values: [searchTerm] }]
+        filters: [{type: 'all', values: [searchTerm]}],
       })
       .then(res => {
         setLoaded(true);
@@ -93,15 +93,13 @@ const BookList = () => {
           <Button
             onClick={() => setCurrentPage(currentPage - 1)}
             disabled={currentPage === 1}
-            className="mr-3 flex-fill"
-          >
+            className="mr-3 flex-fill">
             Prev Page
           </Button>
           <Button
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={data ? data.moreItems : false}
-            className="flex-fill"
-          >
+            className="flex-fill">
             Next Page
           </Button>
         </Col>
@@ -134,8 +132,7 @@ const BookList = () => {
         ) : (
           <Col
             className="d-flex justify-content-center align-items-center flex-column"
-            style={{ minHeight: '50vh' }}
-          >
+            style={{minHeight: '50vh'}}>
             <Spinner animation="border" variant="primary" />
           </Col>
         )}
