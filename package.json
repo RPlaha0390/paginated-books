@@ -37,8 +37,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
       "yarn prettier --write",
-      "yarn fix",
-      "yarn test"
+      "yarn fix"
     ]
   },
   "eslintConfig": {
