@@ -1,0 +1,7 @@
+@import './symbols.scss';
+
+$theme-colors: (
+  'primary': $darkTeal
+);
+
+@import '~bootstrap/scss/bootstrap.scss';
